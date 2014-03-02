@@ -4,8 +4,8 @@
  * \brief This module contains basic IO functions for the TFT LCD access
  * This module is part of the EIB-LCD Controller Firmware
  *
- *	Copyright (c) 2011-2013 Arno Stock <arno.stock@yahoo.de>
- *	Copyright (c) 2013 Stefan Haller <stefanhaller.sverige@gmail.com>
+ *	Copyright (c) 2011-2014 Arno Stock <arno.stock@yahoo.de>
+ *	Copyright (c) 2013-2014 Stefan Haller <stefanhaller.sverige@gmail.com>
  *
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License version 2 as
@@ -1138,22 +1138,15 @@ THREAD(poll_touch , arg) {
 
 			if (controller_type != CTRL_SSD1963) {
 				ly = (TP_Y - SSD1289_Y_OFFSET) / SSD1289_Y_OFFSET_FACT;
-				if (ly < 0)
-					ly = 0;
-				if (ly > get_max_y())
-					ly = get_max_y();
 
 				if (invert_touch_y)
 					ly = get_max_y() - ly;
 
 				//The 2.4" TFT using ILI9325 has mirrored X-Coordinates!
 				if ((controller_type == CTRL_ILI9325) ^ invert_touch_x) {
-
-					if (TP_X >= 380) {
+					if (TP_X >= 380)
 						lx = (3910 - TP_X) / 11;
-						if (lx < 0)
-							lx = 0;
-					} else
+					else
 						lx = (TP_X - 391) / 11;
 
 				} else
@@ -1161,8 +1154,17 @@ THREAD(poll_touch , arg) {
 			} else
 				ssd1963_touch_pressed();	// Uses global variable, FIX THIS!!!!
 
+			// Make sure touch event is within screen limits
+			if (ly < 0)
+				ly = 0;
+			if (ly > get_max_y())
+				ly = get_max_y();
+
+			if (lx < 0)
+				lx = 0;
 			if (lx > get_max_x())
 				lx = get_max_x();
+
 
 #ifdef TOUCH_DEBUG
 			printf_P (PSTR("X=%d - Y=%d - lx=%d - ly=%d\n"), TP_X, TP_Y, lx, ly);
