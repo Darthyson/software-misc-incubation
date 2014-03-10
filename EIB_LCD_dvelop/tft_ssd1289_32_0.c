@@ -38,9 +38,11 @@ void ssd1289_32_0_convert_touch_coordinates (void) {
 	ly = (TP_Y - SSD1289_Y_OFFSET) / SSD1289_Y_OFFSET_FACT;
 
 	if (invert_touch_x) {
-		if (TP_X >= 380)
+		if (TP_X >= 380) {
 			lx = (3910 - TP_X) / SSD1289_X_OFFSET_FACT;
-		else
+			if (lx < 0)
+				lx = 0;
+		} else
 			lx = (TP_X - 391) / SSD1289_X_OFFSET_FACT;
 
 	} else

@@ -38,7 +38,7 @@ volatile uint8_t invert_touch_y; // invert X coordinate of touch position
 volatile uint8_t invert_touch_x; // invert Y coordinate of touch position
 volatile uint16_t screen_max_x; // max X coordinate of display
 volatile uint16_t screen_max_y; // max Y coordinate of display
-volatile uint8_t rotate; // rotate screen by 180°
+volatile uint8_t rotate; // rotate screen by 180ï¿½
 void (*drv_convert_touch_coordinates)(void);	// this function handles the touch event for the TFT in use
 void (*drv_address_set)(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2);
 volatile int16_t lx, ly;
@@ -603,9 +603,9 @@ THREAD(poll_touch , arg) {
 			if (invert_touch_y)
 				ly = get_max_y() - ly;
 
-			if (lx < 0)
-				lx = 0;
-			else if (lx > get_max_x())
+			// The check for lx < 0 should be implemented in the panel specific driver part,
+			// because the symbol area of the small size panels is represented by negative lx values.
+			if (lx > get_max_x())
 				lx = get_max_x();
 
 

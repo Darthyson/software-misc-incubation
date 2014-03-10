@@ -50,6 +50,8 @@ void ssd1963_50_1_convert_touch_coordinates (void) {
 	if (!invert_touch_x)
 		lx = get_max_x() - lx;
 
+	if (lx < 0)
+		lx = 0;
 }
 
 void ssd1963_50_1_init() {

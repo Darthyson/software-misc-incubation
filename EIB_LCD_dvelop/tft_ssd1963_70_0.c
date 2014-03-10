@@ -50,6 +50,8 @@ void ssd1963_70_0_convert_touch_coordinates (void) {
 	if (!invert_touch_x)	// needs to be inversed somehow?? Shouldn't it be like type 2
 		lx = get_max_x() - lx;
 
+	if (lx < 0)
+		lx = 0;
 }
 
 void ssd1963_70_0_init() {
@@ -60,7 +62,7 @@ void ssd1963_70_0_init() {
 	// Return used resolution
 	screen_max_x = T3_HDP;	// X
 	screen_max_y = T3_VDP;	// Y
-	rotate = !rotate; // this display is 180° rotated
+	rotate = !rotate; // this display is 180ï¿½ rotated
 
 	// enable wait
 	XMCRA |= (1<<SRW00) | (1<<SRW01);// wait
