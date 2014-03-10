@@ -43,13 +43,13 @@ void ssd1963_70_0_address_set(unsigned int x1, unsigned int y1, unsigned int x2,
 void ssd1963_70_0_convert_touch_coordinates (void) {
 
 	ly= (TP_X - SSD1963_70_Y_OFFSET) / SSD1963_70_Y_OFFSET_FACT;
+	if (!invert_touch_y)
+		ly = get_max_y() - ly;
 
 	lx= (TP_Y - SSD1963_70_X_OFFSET) / SSD1963_70_X_OFFSET_FACT;
 	if (!invert_touch_x)	// needs to be inversed somehow?? Shouldn't it be like type 2
 		lx = get_max_x() - lx;
 
-	if (lx < 0)
-		lx = 0;
 }
 
 void ssd1963_70_0_init() {
@@ -67,8 +67,8 @@ void ssd1963_70_0_init() {
 
 	tft_set_pointer(SSD1963_set_pll_mn);	//PLL multiplier, set PLL clock to 120M
 	tft_write_byte(0x0023);					//N=0x36 for 6.5M, 0x23 for 10M crystal
-	tft_write_byte(0x0002);
-	tft_write_byte(0x0004);
+	tft_write_byte(0x0002);					// M = 3
+	tft_write_byte(0x0004);					// Use M and N
 	tft_set_pointer(SSD1963_set_pll);		// PLL enable
 	tft_write_byte(0x0001);
 	NutDelay(1);
@@ -82,9 +82,9 @@ void ssd1963_70_0_init() {
 	XMCRA &= ~((1<<SRW00) | (1<<SRW01));	// wait
 
 	tft_set_pointer(SSD1963_set_lshift_freq);	//PLL setting for PCLK, depends on resolution
-	tft_write_byte(0x0003);
-	tft_write_byte(0x00ff);
-	tft_write_byte(0x00ff);
+	tft_write_byte(0x0004);				// Typical 33MHz
+	tft_write_byte(0x0066);				// For 120MHz PLL
+	tft_write_byte(0x0065);				// 2^20*33/120 -1
 
 	tft_set_pointer(SSD1963_set_lcd_mode);		//LCD SPECIFICATION
 	tft_write_byte(0x0000);
@@ -115,14 +115,15 @@ void ssd1963_70_0_init() {
 	tft_write_byte(T3_FPS&0X00FF);
 
 	tft_set_pointer(SSD1963_set_gpio_value);
-	tft_write_byte(0x0005);						//GPIO[3:0] out 1
+	//tft_write_byte(0x0005);					//GPIO[3:0] H = 0(LR), 1(UP), 2(DTB)
+	tft_write_byte(0x0005);						//GPIO[3:0] H = 0(LR), 2(DTB)
 
 	tft_set_pointer(SSD1963_set_gpio_conf);
 	tft_write_byte(0x0007);						//GPIO3=input, GPIO[2:0]=output
 	tft_write_byte(0x0001);						//GPIO0 normal
 
 	tft_set_pointer(SSD1963_set_address_mode);	//rotation
-	if (rotate) tft_write_byte(0x0003);
+	if (rotate) tft_write_byte(0x0003);			// V Flip A[0], H Flip A[1]
 	else tft_write_byte(0x0000);
 
 	tft_set_pointer(SSD1963_set_pixel_data_interface);//pixel data interface

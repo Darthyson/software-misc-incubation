@@ -19,7 +19,7 @@
 #include <sys/timer.h>
 #include <sys/thread.h>
 #include "MemoryMap.h"
-#include "ssd1963.h"
+#include "ssd1963_cmd.h"
 
 
 // TFT modules using the same controller

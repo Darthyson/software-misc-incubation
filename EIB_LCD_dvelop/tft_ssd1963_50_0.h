@@ -20,10 +20,10 @@
 // Touch offset values for 5.0" LCD (Type 0)
 // Measured x --> ly and Y_OFFSET
 // Measured y --> lx and X_OFFSET
-#define SSD1963_50_Y_OFFSET			190
-#define SSD1963_50_Y_OFFSET_FACT	7.5
-#define SSD1963_50_X_OFFSET			220 //3900
-#define SSD1963_50_X_OFFSET_FACT	4.6	//4.7
+#define SSD1963_0_50_Y_OFFSET		200	//3700
+#define SSD1963_0_50_Y_OFFSET_FACT	7.3
+#define SSD1963_0_50_X_OFFSET		220 //3900
+#define SSD1963_0_50_X_OFFSET_FACT	4.6	//4.7
 
 
 #define	T0_HDP		799	//-->800
@@ -40,15 +40,15 @@
 
 #include "ssd1963_cmd.h"
 
-//SSL[15:8] : Supplier ID of Solomon Systech Limited high byte, always 01h (POR = 00000001) 
+//SSL[15:8] : Supplier ID of Solomon Systech Limited high byte, always 01h (POR = 00000001)
 #define SSD1963_SSL_H	0x01
-//SSL[7:0] : Supplier ID of Solomon Systech Limited low byte, always 57h (POR = 010101110) 
+//SSL[7:0] : Supplier ID of Solomon Systech Limited low byte, always 57h (POR = 010101110)
 #define SSD1963_SSL_L	0x57
-//PROD[7:0] : Product ID, always 61h (POR = 01100001) 
+//PROD[7:0] : Product ID, always 61h (POR = 01100001)
 #define	SSD1963_PROD	0x61
-//REV[2:0] : Revision code, always 01h (POR = 001) 
+//REV[2:0] : Revision code, always 01h (POR = 001)
 #define	SSD1963_REV		0x01
-//Exit code, always FFh (POR = 11111111) 			
+//Exit code, always FFh (POR = 11111111)
 #define	SSD1963_EXIT	0xff
 
 void ssd1963_50_0_init(void);

@@ -242,7 +242,7 @@ void tft_init_sequence(void) {
 
 			case SSD1963_TYPE_1: ssd1963_50_1_init();
 				break;
-			
+
 			case SSD1963_TYPE_2: ssd1963_43_0_init();
 				break;
 
@@ -598,12 +598,14 @@ THREAD(poll_touch , arg) {
 			// Make sure touch event is within screen limits
 			if (ly < 0)
 				ly = 0;
-			if (ly > get_max_y())
+			else if (ly > get_max_y())
 				ly = get_max_y();
 			if (invert_touch_y)
 				ly = get_max_y() - ly;
 
-			if (lx > get_max_x())
+			if (lx < 0)
+				lx = 0;
+			else if (lx > get_max_x())
 				lx = get_max_x();
 
 

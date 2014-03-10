@@ -16,7 +16,8 @@ BTARGET = $(PROJ)_$(SWVERSIONMAJOR).$(SWVERSIONMINOR)
 PROJ   = EIB_LCD
 include C:\ethernut-4.9\nutapp\Makedefs
 
-SRCS =  $(PROJ).c tft_io.c ssd1963.c TPUart.c EIBLayers.c NandFlash.c ScreenCtrl.c Sound.c System.c \
+SRCS =  $(PROJ).c tft_io.c tft_hx8347a_32_0.c tft_ili9325_24_0.c tft_ssd1289_32_0.c tft_ssd1963_43_0.c tft_ssd1963_43_1.c tft_ssd1963_50_0.c \
+					tft_ssd1963_50_1.c tft_ssd1963_70_0.c TPUart.c EIBLayers.c NandFlash.c ScreenCtrl.c Sound.c System.c \
 					picture.c page.c e_picture.c e_jumper.c e_button.c addr_tab.c e_led.c e_value.c e_sbutton.c listen.c cyclic.c \
 					o_backlight.c o_led.c rc5_io.c ir_button.c 1wire_io.c ds1820.c dht11.c o_button.c o_warning.c \
 					EIBObjects.c FATSingleOpt/dos.c FATSingleOpt/dir.c FATSingleOpt/fat.c FATSingleOpt/mmc_spi.c FATSingleOpt/find_x.c
@@ -45,8 +46,8 @@ HWDEF += -DSWVERSIONMAJOR=$(SWVERSIONMAJOR)
 HWDEF += -DSWVERSIONMINOR=$(SWVERSIONMINOR)
 #switch to control debug message outputs
 #HWDEF += -DLCD_DEBUG
-#HWDEF += -DTOUCH_DEBUG
-HWDEF += -DHW_DEBUG
+HWDEF += -DTOUCH_DEBUG
+#HWDEF += -DHW_DEBUG
 #switch to support 5.0" rather than 4.2" displays
 #HWDEF += -DTFT_480_800_CTRL_SSD1963
 #invert X axis of touch area for modules sold after b/o 2013

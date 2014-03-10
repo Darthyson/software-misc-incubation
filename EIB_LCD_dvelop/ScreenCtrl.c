@@ -246,6 +246,12 @@ uint16_t addr;
     printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("Firmware V%d.%d"), pgm_read_byte_far((char*)&bootlodrinfo.app_version +1), pgm_read_byte_far((char*)&bootlodrinfo.app_version));
 	printf_tft_P( TFT_COLOR_ORANGE, TFT_COLOR_WHITE, PSTR("Build %s"), __TIMESTAMP__);
 
+#if defined(LCD_DEBUG) || defined(HW_DEBUG) || defined(TOUCH_DEBUG)
+	printf_tft_P( TFT_COLOR_RED, TFT_COLOR_BLACK, PSTR("W A R N I N G  This is a DEBUG build!"));
+#else
+	printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("RELEASE build"));
+#endif
+
 	addr = eib_get_device_address(EIB_DEVICE_CHANNEL);
     printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Phys. Addr %d.%d.%d"), (addr >> 4) & 0x0f, addr & 0x0f, (addr >> 8) & 0xff );
 	if (display_orientation == DISPLAY_ORIENTATION_HOR)

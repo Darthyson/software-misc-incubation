@@ -40,11 +40,9 @@ void ili9325_24_0_convert_touch_coordinates (void) {
 
 	//The 2.4" TFT using ILI9325 has mirrored X-Coordinates!
 	if (!invert_touch_x) {
-		if (TP_X >= 380) {
+		if (TP_X >= 380)
 			lx = (3910 - TP_X) / 11;
-			if (lx < 0)
-				lx = 0;
-		} else
+		else
 			lx = (TP_X - 391) / 11;
 
 	} else

@@ -42,14 +42,12 @@ void ssd1963_43_0_address_set(unsigned int x1, unsigned int y1, unsigned int x2,
 
 void ssd1963_43_0_convert_touch_coordinates (void) {
 
-	ly = (TP_Y - SSD1963_43_Y_OFFSET) / SSD1963_43_Y_OFFSET_FACT;
+	ly = (TP_X - SSD1963_43_0_Y_OFFSET) / SSD1963_43_0_Y_OFFSET_FACT;
 
-	lx = (TP_X - SSD1963_43_X_OFFSET) / SSD1963_43_X_OFFSET_FACT;
+	lx = (TP_Y - SSD1963_43_0_X_OFFSET) / SSD1963_43_0_X_OFFSET_FACT;
 	if (invert_touch_x)
 		lx = get_max_x() - lx;
 
-	if (lx < 0)
-		lx = 0;
 }
 
 void ssd1963_43_0_init() {

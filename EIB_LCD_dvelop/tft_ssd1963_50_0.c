@@ -42,14 +42,12 @@ void ssd1963_50_0_address_set(unsigned int x1, unsigned int y1, unsigned int x2,
 
 void ssd1963_50_0_convert_touch_coordinates (void) {
 
-	ly= (TP_X - SSD1963_50_Y_OFFSET) / SSD1963_50_Y_OFFSET_FACT;
+	ly= (TP_X - SSD1963_0_50_Y_OFFSET) / SSD1963_0_50_Y_OFFSET_FACT;
 
-	lx= (TP_Y - SSD1963_50_X_OFFSET) / SSD1963_50_X_OFFSET_FACT;
+	lx= (TP_Y - SSD1963_0_50_X_OFFSET) / SSD1963_0_50_X_OFFSET_FACT;
 	if (!invert_touch_x)	// needs to be inversed somehow?? Shouldn't it be like type 2
 		lx = get_max_x() - lx;
 
-	if (lx < 0)
-		lx = 0;
 }
 
 void ssd1963_50_0_init() {
