@@ -6,7 +6,10 @@
  *
  * Controller:	SSD1963
  * Size:		4.3" (new version)
- * Resolution:	480 x 272 
+ * Resolution:	480 x 272
+ * LCD Module:	T043ZT268A
+ * Color depth: 262k
+ * DCLK clock:	9MhHz typical (5MHz-12MHz)
  * Order codes:	111044792362
  *
  *	Copyright (c) 2011-2014 Arno Stock <arno.stock@yahoo.de>
@@ -65,9 +68,10 @@ void ssd1963_43_0_init() {
 	// enable wait
 	XMCRA |= (1 << SRW00) | (1 << SRW01);	// wait
 
-	tft_set_pointer(SSD1963_set_pll_mn);	//PLL multiplier, set PLL clock to 120M
-	tft_write_byte(0x002d);					//N=0x36 for 6.5M, 0x23 for 10M crystal
-	tft_write_byte(0x0002);
+	tft_set_pointer(SSD1963_set_pll_mn);	// PLL multiplier, set PLL clock to 120M
+	tft_write_byte(0x0023);					// N=0x36 for 6.5M, 0x23 for 10M crystal
+	tft_write_byte(0x0002);					// M = 3
+	tft_write_byte(0x0004);					// Use M and N
 	tft_write_byte(0x0004);
 	tft_set_pointer(SSD1963_set_pll);		// PLL enable
 	tft_write_byte(0x0001);
@@ -82,9 +86,9 @@ void ssd1963_43_0_init() {
 	XMCRA &= ~((1 << SRW00) | (1 << SRW01)); // wait
 
 	tft_set_pointer(SSD1963_set_lshift_freq); //PLL setting for PCLK, depends on resolution
-	tft_write_byte(0x0000);
-	tft_write_byte(0x00ff);
-	tft_write_byte(0x00be);
+	tft_write_byte(0x0001);				// Typical 9MHz
+	tft_write_byte(0x0033);				// For 120MHz PLL
+	tft_write_byte(0x0032);				// 2^20*9/120 -1
 
 	tft_set_pointer(SSD1963_set_lcd_mode);		//LCD SPECIFICATION
 	tft_write_byte(0x0020);
@@ -116,10 +120,10 @@ void ssd1963_43_0_init() {
 	tft_write_byte(T2_FPS & 0X00FF);
 
 	tft_set_pointer(SSD1963_set_gpio_value);
-	tft_write_byte(0x0000);						//GPIO[3:0] out 1
+	tft_write_byte(0x0000);						//GPIO[3:0] Low
 
 	tft_set_pointer(SSD1963_set_gpio_conf);
-	tft_write_byte(0x0000);						//GPIO3=input, GPIO[2:0]=output
+	tft_write_byte(0x0000);						//GPIO[3:0]=input
 	tft_write_byte(0x0001);						//GPIO0 normal
 
 	tft_set_pointer(SSD1963_set_address_mode);	//rotation

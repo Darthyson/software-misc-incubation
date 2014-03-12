@@ -7,6 +7,9 @@
  * Controller:	SSD1963
  * Size:		5.0" (new version, glass LM50TQ142-A)
  * Resolution:	800 x 480
+ * LCD Module:	VT800480S01-G500
+ * Color depth: 16.7M
+ * DCLK clock:	33.3MhHz typical
  * Order codes:	221044250453
  *
  *	Copyright (c) 2011-2014 Arno Stock <arno.stock@yahoo.de>
@@ -66,9 +69,9 @@ void ssd1963_50_0_init() {
 	XMCRA |= (1<<SRW00) | (1<<SRW01);	// wait
 
 	tft_set_pointer(SSD1963_set_pll_mn);	//PLL multiplier, set PLL clock to 120M
-	tft_write_byte(0x0023);					//N=0x36 for 6.5M, 0x23 for 10M crystal
-	tft_write_byte(0x0002);
-	tft_write_byte(0x0004);
+	tft_write_byte(0x0023);					// N=0x36 for 6.5M, 0x23 for 10M crystal
+	tft_write_byte(0x0002);					// M = 3
+	tft_write_byte(0x0004);					// Use M and N
 	tft_set_pointer(SSD1963_set_pll);		// PLL enable
 	tft_write_byte(0x0001);
 	NutDelay(1);
@@ -82,9 +85,9 @@ void ssd1963_50_0_init() {
 	XMCRA &= ~((1<<SRW00) | (1<<SRW01));	// wait
 
 	tft_set_pointer(SSD1963_set_lshift_freq);//PLL setting for PCLK, depends on resolution
-	tft_write_byte(0x0003);
-	tft_write_byte(0x00ff);
-	tft_write_byte(0x00ff);
+	tft_write_byte(0x0004);				// Typical 33MHz
+	tft_write_byte(0x0066);				// For 120MHz PLL
+	tft_write_byte(0x0065);				// 2^20*33/120 -1
 
 	tft_set_pointer(SSD1963_set_lcd_mode);	//LCD SPECIFICATION
 	tft_write_byte(0x0027);
@@ -115,10 +118,10 @@ void ssd1963_50_0_init() {
 	tft_write_byte(T0_FPS&0X00FF);
 
 	tft_set_pointer(SSD1963_set_gpio_value);
-	tft_write_byte(0x000F);					//GPIO[3:0] out 1
+	tft_write_byte(0x0000);					//GPIO[3:0] Low
 
 	tft_set_pointer(SSD1963_set_gpio_conf);
-	tft_write_byte(0x0007);					//GPIO3=input, GPIO[2:0]=output
+	tft_write_byte(0x0000);					//GPIO[3:0]=input
 	tft_write_byte(0x0001);					//GPIO0 normal
 
 	tft_set_pointer(SSD1963_set_address_mode);//rotation

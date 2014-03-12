@@ -26,16 +26,16 @@
 #define SSD1963_70_X_OFFSET_FACT	4.7
 
 #define		T3_HDP		799	//-->800
-#define		T3_HT		928
+#define		T3_HT		1050
 #define		T3_HPS		46
-#define 	T3_LPS		15
-#define 	T3_HPW		48
+#define 	T3_LPS		210
+#define 	T3_HPW		20
 
 #define		T3_VDP		479	//-->480
 #define 	T3_VT		525
-#define		T3_VPS		16
-#define		T3_FPS		8
-#define		T3_VPW		16
+#define		T3_VPS		23
+#define		T3_FPS		22
+#define		T3_VPW		10
 
 #include "ssd1963_cmd.h"
 

@@ -7,6 +7,9 @@
  * Controller:	SSD1963
  * Size:		7.0"
  * Resolution:	800 x 480
+ * LCD Module:	AT070TN92
+ * Color depth: 16.7M
+ * DCLK clock:	33.3MhHz typical (26.4MHz-46.8MHz)
  * Order codes:	200900131661, 111140237971
  *
  *	Copyright (c) 2011-2014 Arno Stock <arno.stock@yahoo.de>
@@ -67,8 +70,8 @@ void ssd1963_70_0_init() {
 	// enable wait
 	XMCRA |= (1<<SRW00) | (1<<SRW01);// wait
 
-	tft_set_pointer(SSD1963_set_pll_mn);	//PLL multiplier, set PLL clock to 120M
-	tft_write_byte(0x0023);					//N=0x36 for 6.5M, 0x23 for 10M crystal
+	tft_set_pointer(SSD1963_set_pll_mn);	// PLL multiplier, set PLL clock to 120M
+	tft_write_byte(0x0023);					// N=0x36 for 6.5M, 0x23 for 10M crystal
 	tft_write_byte(0x0002);					// M = 3
 	tft_write_byte(0x0004);					// Use M and N
 	tft_set_pointer(SSD1963_set_pll);		// PLL enable
@@ -117,7 +120,7 @@ void ssd1963_70_0_init() {
 	tft_write_byte(T3_FPS&0X00FF);
 
 	tft_set_pointer(SSD1963_set_gpio_value);
-	//tft_write_byte(0x0005);					//GPIO[3:0] H = 0(LR), 1(UP), 2(DTB)
+	//tft_write_byte(0x0007);					//GPIO[3:0] H = 0(LR), 1(UP), 2(DTB) Mirror mode
 	tft_write_byte(0x0005);						//GPIO[3:0] H = 0(LR), 2(DTB)
 
 	tft_set_pointer(SSD1963_set_gpio_conf);

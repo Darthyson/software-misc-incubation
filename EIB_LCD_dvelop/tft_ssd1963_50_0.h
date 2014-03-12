@@ -27,7 +27,7 @@
 
 
 #define	T0_HDP		799	//-->800
-#define	T0_HT		928
+#define	T0_HT		1050
 #define	T0_HPS		46
 #define T0_LPS		15
 #define T0_HPW		48

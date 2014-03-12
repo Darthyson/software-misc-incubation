@@ -23,17 +23,17 @@
 #define SSD1963_43_1_X_OFFSET		170
 #define SSD1963_43_1_X_OFFSET_FACT	7.7
 
-#define		T1_HDP		479	//-->480
-#define		T1_HT		531
-#define		T1_HPS		43
-#define 	T1_LPS		8
-#define 	T1_HPW		1
+#define		T4_HDP		479	//-->480
+#define		T4_HT		531
+#define		T4_HPS		43
+#define 	T4_LPS		8
+#define 	T4_HPW		1
 
-#define		T1_VDP		271	//-->272
-#define 	T1_VT		288
-#define		T1_VPS		12
-#define		T1_FPS		4
-#define		T1_VPW		10
+#define		T4_VDP		271	//-->272
+#define 	T4_VT		288
+#define		T4_VPS		12
+#define		T4_FPS		4
+#define		T4_VPW		10
 
 #include "ssd1963_cmd.h"
 

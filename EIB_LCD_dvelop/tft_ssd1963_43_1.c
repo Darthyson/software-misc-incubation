@@ -58,8 +58,8 @@ void ssd1963_43_1_init() {
 	drv_convert_touch_coordinates = ssd1963_43_1_convert_touch_coordinates;
 	drv_address_set = ssd1963_43_1_address_set;
 	// Return used resolution
-	screen_max_x = T1_HDP;	// X
-	screen_max_y = T1_VDP;	// Y
+	screen_max_x = T4_HDP;	// X
+	screen_max_y = T4_VDP;	// Y
 
 	// enable wait
 	XMCRA |= (1 << SRW00) | (1 << SRW01);	// wait
@@ -88,30 +88,30 @@ void ssd1963_43_1_init() {
 	tft_set_pointer(SSD1963_set_lcd_mode);		//LCD SPECIFICATION
 	tft_write_byte(0x0000);
 	tft_write_byte(0x0000);
-	tft_write_byte((T1_HDP >> 8) & 0X00FF);		//Set HDP
-	tft_write_byte(T1_HDP & 0X00FF);
-	tft_write_byte((T1_VDP >> 8) & 0X00FF);		//Set VDP
-	tft_write_byte(T1_VDP & 0X00FF);
+	tft_write_byte((T4_HDP >> 8) & 0X00FF);		//Set HDP
+	tft_write_byte(T4_HDP & 0X00FF);
+	tft_write_byte((T4_VDP >> 8) & 0X00FF);		//Set VDP
+	tft_write_byte(T4_VDP & 0X00FF);
 	tft_write_byte(0x002D);
 
 	tft_set_pointer(SSD1963_set_hori_period);	//HSYNC
-	tft_write_byte((T1_HT >> 8) & 0X00FF);		//Set HT
-	tft_write_byte(T1_HT & 0X00FF);
-	tft_write_byte((T1_HPS >> 8) & 0X00FF);		//Set HPS
-	tft_write_byte(T1_HPS & 0X00FF);
-	tft_write_byte(T1_HPW);						//Set HPW
-	tft_write_byte((T1_LPS >> 8) & 0X00FF);		//Set HPS
-	tft_write_byte(T1_LPS & 0X00FF);
+	tft_write_byte((T4_HT >> 8) & 0X00FF);		//Set HT
+	tft_write_byte(T4_HT & 0X00FF);
+	tft_write_byte((T4_HPS >> 8) & 0X00FF);		//Set HPS
+	tft_write_byte(T4_HPS & 0X00FF);
+	tft_write_byte(T4_HPW);						//Set HPW
+	tft_write_byte((T4_LPS >> 8) & 0X00FF);		//Set HPS
+	tft_write_byte(T4_LPS & 0X00FF);
 	tft_write_byte(0x0000);
 
 	tft_set_pointer(SSD1963_set_vert_period);	//VSYNC
-	tft_write_byte((T1_VT >> 8) & 0X00FF);		//Set VT
-	tft_write_byte(T1_VT & 0X00FF);
-	tft_write_byte((T1_VPS >> 8) & 0X00FF);		//Set VPS
-	tft_write_byte(T1_VPS & 0X00FF);
-	tft_write_byte(T1_VPW);						//Set VPW
-	tft_write_byte((T1_FPS >> 8) & 0X00FF);		//Set FPS
-	tft_write_byte(T1_FPS & 0X00FF);
+	tft_write_byte((T4_VT >> 8) & 0X00FF);		//Set VT
+	tft_write_byte(T4_VT & 0X00FF);
+	tft_write_byte((T4_VPS >> 8) & 0X00FF);		//Set VPS
+	tft_write_byte(T4_VPS & 0X00FF);
+	tft_write_byte(T4_VPW);						//Set VPW
+	tft_write_byte((T4_FPS >> 8) & 0X00FF);		//Set FPS
+	tft_write_byte(T4_FPS & 0X00FF);
 
 	tft_set_pointer(SSD1963_set_gpio_value);
 	tft_write_byte(0x000F);						//GPIO[3:0] out 1
