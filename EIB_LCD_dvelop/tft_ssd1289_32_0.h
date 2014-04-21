@@ -16,6 +16,7 @@
 #define TFT_SSD1289_32_0_H_
 
 #include "tft_io.h"
+#include "ssd1289_cmd.h"
 
 // The calibration values are always related to ly and lx
 // Touch offset values for 3.2" LCD
@@ -23,6 +24,7 @@
 #define SSD1289_Y_OFFSET_FACT	15
 #define SSD1289_X_OFFSET		350
 #define SSD1289_X_OFFSET_FACT	11
+
 
 void ssd1289_32_0_init(void);
 

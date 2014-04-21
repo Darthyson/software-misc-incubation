@@ -41,6 +41,7 @@ volatile uint16_t screen_max_y; // max Y coordinate of display
 volatile uint8_t rotate; // rotate screen by 180�
 void (*drv_convert_touch_coordinates)(void);	// this function handles the touch event for the TFT in use
 void (*drv_address_set)(unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2);
+void (*drv_lcd_rotate)(uint8_t rotation);
 volatile int16_t lx, ly;
 volatile int16_t TP_X, TP_Y;
 
@@ -696,8 +697,10 @@ void tft_init(void) {
 	TFT_BACKLIGHT_OFF
 	TFT_BACKLIGHT_INIT
 
-	drv_address_set = NULL;
+	// make sure we don't point into the forest ;-)
+    drv_address_set = NULL;
 	drv_convert_touch_coordinates = NULL;
+    drv_lcd_rotate = NULL;
 
 	// init touch controller ports
 	TOUCH_PORT_INIT

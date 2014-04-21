@@ -335,7 +335,6 @@ uint8_t t, bit_count, wait_count;
 		}
 	}
 
-	// TO DO: Check for end bit, make sure we did not sample to much. Double 2 Bug!?
 	return 7;	// Got too many bits
 }
 

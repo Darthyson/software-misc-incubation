@@ -167,12 +167,13 @@ extern volatile uint16_t screen_max_x; // max X coordinate of display
 extern volatile uint16_t screen_max_y; // max Y coordinate of display
 extern volatile int16_t lx, ly; // screen coordinates of touch event
 extern volatile int16_t TP_X, TP_Y;	// absolute coordinates of touch event
-extern volatile uint8_t rotate;
+extern volatile uint8_t rotate;     // rotates screen by 180° when true
 
 // this function handles the touch event for the TFT in use
 extern void (*drv_convert_touch_coordinates)(void);
 // this function sets the address pointer for the next display data write operation
 extern void (*drv_address_set)(unsigned int, unsigned int, unsigned int, unsigned int);
+extern void (*drv_lcd_rotate)(uint8_t rotation);
 
 /*
 *  ===================== End of driver communication block ======================

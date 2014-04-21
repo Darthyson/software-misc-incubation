@@ -75,7 +75,7 @@ void init_hardware (void) {
 	SPSR = 0;
 
 	backlight_dimming = 25;
-	backlight_active = 255;
+	backlight_active = 127;     // Half to reduce startup current of SMPS
 
 }
 
@@ -126,9 +126,14 @@ uint8_t tft_config;
 		// get display orientation from Flash
 		display_orientation = tft_config & 0x03;
 		// invert X coordinate of touch position
-		invert_touch_x = (tft_config & 0x80) > 0;
+		//invert_touch_x = (tft_config & 0x80) > 0;
 		// invert Y coordinate of touch position
 		invert_touch_y = (tft_config & 0x40) > 0;
+        // FIXME: Mapped to LCD rotate for testing ##############################
+        rotate = invert_touch_y;
+        invert_touch_x = invert_touch_y;
+        drv_lcd_rotate(rotate);
+        // END Testing ##########################################################
 
 		printf_tft_P( TFT_COLOR_WHITE, TFT_COLOR_BLACK, PSTR("Touch mirror (x/y): %d/%d"), invert_touch_x, invert_touch_y);
 

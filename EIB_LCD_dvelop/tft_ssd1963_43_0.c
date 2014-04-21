@@ -55,15 +55,25 @@ void ssd1963_43_0_convert_touch_coordinates (void) {
 		lx = 0;
 }
 
+
+void ssd1963_43_0_rotate(uint8_t rotation)
+{
+    tft_set_pointer(SSD1963_set_address_mode);	//rotation
+    if (rotation) tft_write_byte(0x0000);   // Upside down
+    else tft_write_byte(0x0003);            // Back to normal
+}
+
+
 void ssd1963_43_0_init() {
 
 	// set global information
 	drv_convert_touch_coordinates = ssd1963_43_0_convert_touch_coordinates;
 	drv_address_set = ssd1963_43_0_address_set;
+    drv_lcd_rotate = ssd1963_43_0_rotate;
 	// Return used resolution
 	screen_max_x = T2_HDP;	// X
 	screen_max_y = T2_VDP;	// Y
-	rotate = !rotate; // this display is 180� rotated
+	//rotate = !rotate; // this display is 180� rotated
 
 	// enable wait
 	XMCRA |= (1 << SRW00) | (1 << SRW01);	// wait
@@ -127,8 +137,9 @@ void ssd1963_43_0_init() {
 	tft_write_byte(0x0001);						//GPIO0 normal
 
 	tft_set_pointer(SSD1963_set_address_mode);	//rotation
-	if (rotate) tft_write_byte(0x0003);
-	else tft_write_byte(0x0000);
+	//if (rotate)
+    tft_write_byte(0x0003);
+	//else tft_write_byte(0x0000);
 
 	tft_set_pointer(SSD1963_set_pixel_data_interface); //pixel data interface
 	tft_write_byte(0x0003);
