@@ -61,6 +61,8 @@ uint8_t G_pri_address;		// Address for PRI table within QFI info
 #define CLRSCN_BUTTON_YPOS		204
 #define	EXIT_BUTTON_XPOS		214
 #define	EXIT_BUTTON_YPOS		204
+#define REBOOT_BUTTON_XPOS		214
+#define REBOOT_BUTTON_YPOS		160
 #define	DOWNLOAD_LIST_UP_XPOS	004
 #define DOWNLOAD_LIST_UP_YPOS	204
 #define	DOWNLOAD_LIST_DOWN_XPOS	054
@@ -74,6 +76,12 @@ uint8_t G_pri_address;		// Address for PRI table within QFI info
 #define FLASH_ERASE_BUTTON_XPOS_LONELY	70
 #define FLASH_ERASE_BUTTON_XPOS 109
 #define FLASH_ERASE_BUTTON_YPOS 204
+
+// Confirm reboot
+#define REBOOT_CONFIRM_BUTTON_XPOS	4
+#define REBOOT_CONFIRM_YPOS			160
+#define CANCEL_BUTTON_XPOS			214
+#define CANCEL_BUTTON_YPOS			204
 
 #define CHARACTER_WIDTH			8
 #define BUTTON_TEXT_OFFSET		8
@@ -278,6 +286,8 @@ uint16_t addr;
 	draw_button (MONITOR_BUTTON_XPOS, MONITOR_BUTTON_YPOS, BUTTON_WIDTH, "Monitor");
 	draw_button (DOWNLOAD_BUTTON_XPOS, DOWNLOAD_BUTTON_YPOS, BUTTON_WIDTH, "Download");
 	draw_button (EXIT_BUTTON_XPOS, EXIT_BUTTON_YPOS, BUTTON_WIDTH, "Exit");
+	draw_button (REBOOT_BUTTON_XPOS, REBOOT_BUTTON_YPOS, BUTTON_WIDTH, "Reboot");
+
 	system_page_active = SYSTEM_PAGE_MAIN;
 }
 
@@ -518,6 +528,23 @@ uint8_t s;
 	system_page_active = SYSTEM_PAGE_DOWNLOAD_PROGRESS;
 }
 
+void create_reboot_confirm_page (void) {
+
+	// clear page contents
+	tft_clrscr(TFT_COLOR_YELLOW);
+
+	// write header
+    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_YELLOW, PSTR("Reboot System"));
+    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_YELLOW, PSTR("All object values will be cleared."));
+    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_YELLOW, PSTR("Are you sure to reboot the system?"));
+
+	draw_button (REBOOT_CONFIRM_BUTTON_XPOS, REBOOT_CONFIRM_YPOS, BUTTON_WIDTH, "Reboot");
+	draw_button (CANCEL_BUTTON_XPOS, CANCEL_BUTTON_YPOS, BUTTON_WIDTH, "Cancel");
+	// set active system page
+	system_page_active = SYSTEM_PAGE_REBOOT_CONFIRM;
+}
+
+
 void process_system_page_event (t_touch_event *evt) {
 
 	if (evt->state == TOUCHED) {
@@ -538,6 +565,11 @@ void process_system_page_event (t_touch_event *evt) {
 			if (check_button (DOWNLOAD_BUTTON_XPOS, DOWNLOAD_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
 				sound_beep_on (0);
 				create_download_selection_page ();
+			}
+			// check, if reboot button is hit
+			if (check_button (REBOOT_BUTTON_XPOS, REBOOT_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
+				sound_beep_on (0);
+				create_reboot_confirm_page ();
 			}
 			// check, if Exit button is hit
 			if (check_button (EXIT_BUTTON_XPOS, EXIT_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
@@ -693,6 +725,18 @@ void process_system_page_event (t_touch_event *evt) {
 			}
 			// check, if Exit button is hit
 			if (check_button (EXIT_BUTTON_XPOS, EXIT_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
+				sound_beep_on (0);
+				create_system_info_screen ();
+			}
+		}
+		else if (system_page_active == SYSTEM_PAGE_REBOOT_CONFIRM) {
+
+			// Reboot confirmation
+			if (check_button (REBOOT_CONFIRM_BUTTON_XPOS, REBOOT_CONFIRM_YPOS, BUTTON_WIDTH, evt)) {
+				reboot();
+			}
+			// Cancel
+			if (check_button (CANCEL_BUTTON_XPOS, CANCEL_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
 				sound_beep_on (0);
 				create_system_info_screen ();
 			}

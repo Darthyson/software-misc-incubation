@@ -27,6 +27,7 @@
 #define SYSTEM_PAGE_MONITOR_SELECTION	6	// page to select monitor function
 #define SYSTEM_PAGE_HARDWARE_MONITOR	7	// hardware monitor page (IR, Buttons, ...)
 #define SYSTEM_PAGE_FLASH_CONTROL		8	// flash erase page (erase external flash)
+#define SYSTEM_PAGE_REBOOT_CONFIRM		9	// confirm system reboot
 
 #define	BYTE2COLOR(red, green, blue) ( ((red) & 0xf8) << 8) | ( ((green) & 0xfc) << 3) | (((blue) & 0xf8) >> 3)
 

@@ -191,7 +191,8 @@ void init_physical_address_from_Flash (void);
 void set_flash_content_invalid(void);
 // check for connected TFT module type
 uint8_t check_lcd_type_code (void);
-
+// reboot system
+void reboot (void);
 
 
 #endif // _SYSTEM_H_

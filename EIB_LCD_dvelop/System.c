@@ -14,6 +14,7 @@
  */
 #include "System.h"
 #include "FATSingleOpt/dos.h"
+#include <avr/wdt.h>
 
 volatile uint8_t display_orientation;
 const uint8_t port_bit[7] = { 0x01, 0x02, 0x04, 0x10, 0x20, 0x40, 0x80 };
@@ -75,7 +76,7 @@ void init_hardware (void) {
 	SPSR = 0;
 
 	backlight_dimming = 25;
-	backlight_active = 127;     // Half to reduce startup current of SMPS
+	backlight_active = 127;
 
 }
 
@@ -126,14 +127,9 @@ uint8_t tft_config;
 		// get display orientation from Flash
 		display_orientation = tft_config & 0x03;
 		// invert X coordinate of touch position
-		//invert_touch_x = (tft_config & 0x80) > 0;
+		invert_touch_x = (tft_config & 0x80) > 0;
 		// invert Y coordinate of touch position
 		invert_touch_y = (tft_config & 0x40) > 0;
-        // FIXME: Mapped to LCD rotate for testing ##############################
-        rotate = invert_touch_y;
-        invert_touch_x = invert_touch_y;
-        drv_lcd_rotate(rotate);
-        // END Testing ##########################################################
 
 		printf_tft_P( TFT_COLOR_WHITE, TFT_COLOR_BLACK, PSTR("Touch mirror (x/y): %d/%d"), invert_touch_x, invert_touch_y);
 
@@ -349,4 +345,18 @@ _LCD_FILE_NAMES_t *current_fname;
 	} while ((entries < MAX_FNAME_COUNT) && Findnext());
 
 	return entries;
+}
+
+/* reboot the system by WDT overflow */
+void reboot () {
+
+	// disable interrupts
+	NutEnterCritical ();
+
+	// start WDT
+	wdt_enable (WDTO_30MS);
+
+	// wait for reset
+	while (1);
+
 }
