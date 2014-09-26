@@ -5,7 +5,7 @@
  * This module is part of the EIB-LCD Controller Firmware
  *
  *	Copyright (c) 2011-2013 Arno Stock <arno.stock@yahoo.de>
- *	Copyright (c) 2013 Stefan Haller <stefanhaller.sverige@gmail.com>
+ *	Copyright (c) 2013-2014 Stefan Haller <stefanhaller.sverige@gmail.com>
  *
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License version 2 as
@@ -76,7 +76,7 @@ void init_hardware (void) {
 	SPSR = 0;
 
 	backlight_dimming = 25;
-	backlight_active = 127;
+	backlight_active = 127;     // Half to reduce startup current of SMPS
 
 }
 
@@ -130,10 +130,16 @@ uint8_t tft_config;
 		invert_touch_x = (tft_config & 0x80) > 0;
 		// invert Y coordinate of touch position
 		invert_touch_y = (tft_config & 0x40) > 0;
+        // FIXME: Mapped to LCD rotate for testing ##############################
+        rotate = (tft_config & 0x20) > 0;
+        //invert_touch_x = invert_touch_y;
+        drv_lcd_rotate(rotate);
+        // END Testing ##########################################################
 
 		printf_tft_P( TFT_COLOR_WHITE, TFT_COLOR_BLACK, PSTR("Touch mirror (x/y): %d/%d"), invert_touch_x, invert_touch_y);
 
-		// get backlight dimming from Flash
+		// get backlight dimming from Flash (not used any more)
+        //read_flash ( LCD_HEADER_DIMMING) & 0xff
 		// copy TOC to xram
 		toc_items = read_flash (LCD_TOC_ADDR >> 1) & 0xff;
 		copy_Flash_to_XRAM (LCD_TOC_ADDR, XRAM_TOC_ADDR, TOC_HEADER_SIZE + toc_items*TOC_ITEMS_SIZE);

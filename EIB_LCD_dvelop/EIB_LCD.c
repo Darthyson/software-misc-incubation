@@ -69,7 +69,7 @@ uint32_t baud = 115200;
     NutSleep(200);
     printf_P(PSTR("\n\nNut/OS %s "), NutVersionString());
 	printf_P(PSTR("\nFirmware V%d.%d"), pgm_read_byte_far((char*)&bootlodrinfo.app_version +1), pgm_read_byte_far((char*)&bootlodrinfo.app_version));
-	printf_P(PSTR("\nBuild %s with GCC %s"), __TIMESTAMP__, __VERSION__);
+	printf_P(PSTR("\nBuild %s %s with GCC %s"), __DATE__, __TIME__, __VERSION__);
 #endif
 	/* set external memory i/f timing */
 	XMCRB |= (1<<XMBK); // enable bus keepers

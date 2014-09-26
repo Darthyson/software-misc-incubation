@@ -109,7 +109,7 @@ uint8_t		checksum;
 #define	LCD_HEADER_MAGIC_2			0x4443
 // V1.0
 #define LCD_HEADER_VERSION_ADDR		0, 0x03
-#define LCD_VERSION_EXPECTED		0x1D
+#define LCD_VERSION_EXPECTED		0x1E
 // Physical Address
 #define LCD_HEADER_PHYSICAL_ADDR_LB	0, 0x03
 #define LCD_HEADER_PHYSICAL_ADDR_HB	0, 0x04

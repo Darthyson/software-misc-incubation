@@ -252,7 +252,7 @@ uint16_t addr;
 
     printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("Nut/OS %s "), NutVersionString());
     printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("Firmware V%d.%d"), pgm_read_byte_far((char*)&bootlodrinfo.app_version +1), pgm_read_byte_far((char*)&bootlodrinfo.app_version));
-	printf_tft_P( TFT_COLOR_ORANGE, TFT_COLOR_WHITE, PSTR("Build %s"), __TIMESTAMP__);
+	printf_tft_P( TFT_COLOR_ORANGE, TFT_COLOR_WHITE, PSTR("Build %s %s"), __DATE__, __TIME__);
 
 #if defined(LCD_DEBUG) || defined(HW_DEBUG) || defined(TOUCH_DEBUG)
 	printf_tft_P( TFT_COLOR_RED, TFT_COLOR_BLACK, PSTR("W A R N I N G  This is a DEBUG build!"));

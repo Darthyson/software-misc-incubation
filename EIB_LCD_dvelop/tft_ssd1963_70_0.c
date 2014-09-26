@@ -146,10 +146,6 @@ void ssd1963_70_0_init() {
 	tft_set_pointer(SSD1963_set_pixel_data_interface);//pixel data interface
 	tft_write_byte(0x0003);
 
-#ifdef LCD_DEBUG
-tft_set_pointer(SSD1963_get_pixel_data_interface); //pixel data interface
-printf_P(PSTR("\nint: %2.2x\n"), tft_read_byte());
-#endif
 	NutDelay(5);
 
 	tft_set_pointer(SSD1963_set_display_on); //display on

@@ -223,7 +223,7 @@ void tft_init_sequence(void) {
 
 	}
 #ifdef LCD_DEBUG
-	printf_P(PSTR("\nController-ID= %d"), controller_type);
+	printf_P(PSTR("\nController-ID= %u"), controller_type);
 #endif
 
 	if (controller_type == CTRL_HX8347) {
