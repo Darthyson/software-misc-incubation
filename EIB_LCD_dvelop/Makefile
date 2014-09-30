@@ -5,7 +5,7 @@ DEVID = 0x32024002
 #LCD controller of 2.4" module
 #DEVID = 0x32024003
 SWVERSIONMAJOR = 1
-SWVERSIONMINOR = 19
+SWVERSIONMINOR = 20
 BOOTLDRSIZE = 0x2000
 #FLASHSIZE - BOOTLDRSIZE - 8
 BOOTLDRINFOSTART = 0x1DFF8
@@ -46,14 +46,9 @@ HWDEF += -DSWVERSIONMAJOR=$(SWVERSIONMAJOR)
 HWDEF += -DSWVERSIONMINOR=$(SWVERSIONMINOR)
 #switch to control debug message outputs
 #HWDEF += -DLCD_DEBUG
-HWDEF += -DTOUCH_DEBUG
+#HWDEF += -DTOUCH_DEBUG
 #HWDEF += -DHW_DEBUG
-#switch to support 5.0" rather than 4.2" displays
-#HWDEF += -DTFT_480_800_CTRL_SSD1963
-#invert X axis of touch area for modules sold after b/o 2013
-HWDEF += -DTFT_480_800_CTRL_SSD1963_INVERT_TOUCH_X
-#Switch to support NEW 4.3" modules with SD slot instead of OLD one without (swaps touch x-y & adjusts LCD init)
-HWDEF += -DTFT_272_480_CTRL_SSD1963_NEW
+
 
 LDFLAGS	+= -Wl,--section-start=.bootldrinfo=$(BOOTLDRINFOSTART)
 #CFLAGS += -gdwarf-2

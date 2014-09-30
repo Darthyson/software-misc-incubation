@@ -30,7 +30,7 @@
 	0: Flash content is not yet checked, corrupted or has the wrong structure version
 	1: Flash content is checked and ok
 */
-uint8_t	flash_content_ok;
+uint8_t	flash_content_bad;
 
 /*!
 	Definition to obtain the version of the firmware image
@@ -49,7 +49,7 @@ const bootldrinfo_t bootlodrinfo __attribute__ ((section (".bootldrinfo"))) = {D
  */
 int main(void)
 {
-	/* reset some hardware configs to cope with Bootloader */
+    /* reset some hardware configs to cope with Bootloader */
 	init_hardware ();
 
 	/* init the status LED on the LCD controller board */

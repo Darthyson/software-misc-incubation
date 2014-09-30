@@ -79,7 +79,9 @@ uint8_t G_pri_address;		// Address for PRI table within QFI info
 
 // Confirm reboot
 #define REBOOT_CONFIRM_BUTTON_XPOS	4
-#define REBOOT_CONFIRM_YPOS			160
+#define REBOOT_CONFIRM_BUTTON_YPOS	160
+#define LCD_ROTATE_BUTTON_XPOS	    54
+#define LCD_ROTATE_BUTTON_YPOS	    204
 #define CANCEL_BUTTON_XPOS			214
 #define CANCEL_BUTTON_YPOS			204
 
@@ -248,10 +250,10 @@ void create_system_info_screen (void) {
 
 uint16_t addr;
 
-	tft_clrscr(TFT_COLOR_LIGHTGRAY);	// White before
+	tft_clrscr(TFT_COLOR_LIGHTGRAY);
 
-    printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("Nut/OS %s "), NutVersionString());
-    printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("Firmware V%d.%d"), pgm_read_byte_far((char*)&bootlodrinfo.app_version +1), pgm_read_byte_far((char*)&bootlodrinfo.app_version));
+	printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("Nut/OS %s "), NutVersionString());
+	printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("Firmware V%d.%d"), pgm_read_byte_far((char*)&bootlodrinfo.app_version +1), pgm_read_byte_far((char*)&bootlodrinfo.app_version));
 	printf_tft_P( TFT_COLOR_ORANGE, TFT_COLOR_WHITE, PSTR("Build %s %s"), __DATE__, __TIME__);
 
 #if defined(LCD_DEBUG) || defined(HW_DEBUG) || defined(TOUCH_DEBUG)
@@ -260,32 +262,48 @@ uint16_t addr;
 	printf_tft_P( TFT_COLOR_BLUE, TFT_COLOR_WHITE, PSTR("RELEASE build"));
 #endif
 
-	addr = eib_get_device_address(EIB_DEVICE_CHANNEL);
-    printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Phys. Addr %d.%d.%d"), (addr >> 4) & 0x0f, addr & 0x0f, (addr >> 8) & 0xff );
-	if (display_orientation == DISPLAY_ORIENTATION_HOR)
-    	printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("Horizontal"));
-	else if (display_orientation == DISPLAY_ORIENTATION_90L)
-    	printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("90 left"));
-	else if (display_orientation == DISPLAY_ORIENTATION_90R)
-    	printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("90 right"));
-	else if (display_orientation == DISPLAY_ORIENTATION_UPSIDE)
-    	printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("180"));
+    // Display error message if flash content is not valid
+    if(!flash_content_bad) {
+	    addr = eib_get_device_address(EIB_DEVICE_CHANNEL);
+        printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Phys. Addr %d.%d.%d"), (addr >> 4) & 0x0f, addr & 0x0f, (addr >> 8) & 0xff );
+	    if (display_orientation == DISPLAY_ORIENTATION_HOR)
+    	    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("Horizontal"));
+	    else if (display_orientation == DISPLAY_ORIENTATION_90L)
+    	    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("90 left"));
+	    else if (display_orientation == DISPLAY_ORIENTATION_90R)
+    	    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("90 right"));
+	    else if (display_orientation == DISPLAY_ORIENTATION_UPSIDE)
+    	    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("180"));
 
-    printf_tft_P( TFT_COLOR_WHITE, TFT_COLOR_BLACK, PSTR("Touch mirror (x/y): %d/%d"), invert_touch_x, invert_touch_y);
+        printf_tft_P( TFT_COLOR_WHITE, TFT_COLOR_BLACK, PSTR("Touch mirror (x/y): %d/%d"), invert_touch_x, invert_touch_y);
 
-	if (eib_get_status() == EIB_NORMAL)
-    	printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("EIB online"));
-	else
-    	printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("EIB offline"));
+	    if (eib_get_status() == EIB_NORMAL)
+    	    printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("EIB online"));
+	    else
+    	    printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("EIB offline"));
 
-	printf_tft_P (TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("TFT Controller= %d, R00=%4.4x"), controller_type, controller_id, lcd_type);
-	printf_tft_P (TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("R-Code %u,   Resolution %u x %u"), lcd_type, get_max_x()+1, get_max_y()+1);
+	    printf_tft_P (TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("TFT Controller= %d, R00=%4.4x"), controller_type, controller_id, lcd_type);
+	    printf_tft_P (TFT_COLOR_BLACK, TFT_COLOR_WHITE, PSTR("R-Code %u,   Resolution %u x %u"), lcd_type, get_max_x()+1, get_max_y()+1);
 
-    // Draw Button
-	draw_button (ERASE_BUTTON_XPOS, ERASE_BUTTON_YPOS, BUTTON_WIDTH, "Erase Flash");		// added by sh
+        // Draw Exit Button
+        draw_button (EXIT_BUTTON_XPOS, EXIT_BUTTON_YPOS, BUTTON_WIDTH, "Exit");
+    }
+    else if (flash_content_bad == 2) {
+        printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Flash empty, please load a project!"));
+        printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Found Magic: %#x %#x %#x"), read_flash (LCD_HEADER_MAGIC_ADDR_0), read_flash (LCD_HEADER_MAGIC_ADDR_1),read_flash (LCD_HEADER_MAGIC_ADDR_2));
+    }        
+    else if (flash_content_bad == 3) {
+        printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("OOPS! Current project version not supported!"));
+        printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Found %#x but expected %#x"), read_flash (LCD_HEADER_VERSION_ADDR) & 0xff, LCD_VERSION_EXPECTED);
+    }        
+    // Flash invalid, unspecified (=1)
+    else
+        printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("OOPS! Flash content not valid :-("));
+
+    // Draw all other Buttons
+	draw_button (ERASE_BUTTON_XPOS, ERASE_BUTTON_YPOS, BUTTON_WIDTH, "Erase Flash");
 	draw_button (MONITOR_BUTTON_XPOS, MONITOR_BUTTON_YPOS, BUTTON_WIDTH, "Monitor");
 	draw_button (DOWNLOAD_BUTTON_XPOS, DOWNLOAD_BUTTON_YPOS, BUTTON_WIDTH, "Download");
-	draw_button (EXIT_BUTTON_XPOS, EXIT_BUTTON_YPOS, BUTTON_WIDTH, "Exit");
 	draw_button (REBOOT_BUTTON_XPOS, REBOOT_BUTTON_YPOS, BUTTON_WIDTH, "Reboot");
 
 	system_page_active = SYSTEM_PAGE_MAIN;
@@ -538,7 +556,8 @@ void create_reboot_confirm_page (void) {
     printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_YELLOW, PSTR("All object values will be cleared."));
     printf_tft_P( TFT_COLOR_BLACK, TFT_COLOR_YELLOW, PSTR("Are you sure to reboot the system?"));
 
-	draw_button (REBOOT_CONFIRM_BUTTON_XPOS, REBOOT_CONFIRM_YPOS, BUTTON_WIDTH, "Reboot");
+	draw_button (REBOOT_CONFIRM_BUTTON_XPOS, REBOOT_CONFIRM_BUTTON_YPOS, BUTTON_WIDTH, "Reboot");
+    draw_button (LCD_ROTATE_BUTTON_XPOS, LCD_ROTATE_BUTTON_YPOS, BUTTON_WIDTH, "LCD Rotate");
 	draw_button (CANCEL_BUTTON_XPOS, CANCEL_BUTTON_YPOS, BUTTON_WIDTH, "Cancel");
 	// set active system page
 	system_page_active = SYSTEM_PAGE_REBOOT_CONFIRM;
@@ -554,7 +573,7 @@ void process_system_page_event (t_touch_event *evt) {
 			// check, if flash erase button is hit
 			if (check_button (ERASE_BUTTON_XPOS, ERASE_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
 				sound_beep_on (0);
-				create_flash_control_page ();	// added by sh
+				create_flash_control_page ();
 			}
 			// check, if busmon button is hit
 			if (check_button (MONITOR_BUTTON_XPOS, MONITOR_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
@@ -574,8 +593,11 @@ void process_system_page_event (t_touch_event *evt) {
 			// check, if Exit button is hit
 			if (check_button (EXIT_BUTTON_XPOS, EXIT_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
 				sound_beep_on (0);
-				system_page_active = SYSTEM_PAGE_NONE;
-				set_page (0);
+                // Stay on info screen if flash contend is not valid
+                if (!flash_content_bad) {
+				    system_page_active = SYSTEM_PAGE_NONE;
+				    set_page (0);
+                }
 			}
 		}
 		else if (system_page_active == SYSTEM_PAGE_DOWNLOAD_SELECTION) {
@@ -732,8 +754,12 @@ void process_system_page_event (t_touch_event *evt) {
 		else if (system_page_active == SYSTEM_PAGE_REBOOT_CONFIRM) {
 
 			// Reboot confirmation
-			if (check_button (REBOOT_CONFIRM_BUTTON_XPOS, REBOOT_CONFIRM_YPOS, BUTTON_WIDTH, evt)) {
+			if (check_button (REBOOT_CONFIRM_BUTTON_XPOS, REBOOT_CONFIRM_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
 				reboot();
+            }
+            // LCD 180° Rotation
+            if (check_button (LCD_ROTATE_BUTTON_XPOS, LCD_ROTATE_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
+                drv_lcd_rotate(!lcd_rotation);  // Toggle rotation
 			}
 			// Cancel
 			if (check_button (CANCEL_BUTTON_XPOS, CANCEL_BUTTON_YPOS, BUTTON_WIDTH, evt)) {

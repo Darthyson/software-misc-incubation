@@ -97,7 +97,7 @@ _PAGE_ELEMENT_t		*page_element;
 uint8_t	element_count;
 int i;
 
-	if (!flash_content_ok)
+	if (flash_content_bad)
 		return;
 	// init counter for automatic page change
 	auto_jump_counter = 0;
@@ -168,7 +168,7 @@ _PAGE_ELEMENT_t		*page_element;
 uint8_t	element_count;
 int i;
 
-	if (!flash_content_ok) {
+	if (flash_content_bad) {
 		touch_function = NULL;
 		active_element = NULL;
 		active_element_state = 0;
@@ -267,7 +267,7 @@ uint8_t	element_count;
 int i;
 int	eib_object;
 
-	if (!flash_content_ok)
+	if (flash_content_bad)
 		return;
 
 	if (system_page_active || is_screen_locked() )

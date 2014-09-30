@@ -65,7 +65,7 @@ uint8_t	element_count;
 int i;
 int	eib_object;
 
-	if (!flash_content_ok)
+	if (flash_content_bad)
 		return;
 
 	eib_object = get_group_adress_index (address);
@@ -85,7 +85,7 @@ int	eib_object;
 
 		// set page descriptions bank for safety
 		XRAM_SELECT_BLOCK(XRAM_LISTEN_ELEMENTS_PAGE);
-		
+
 		switch (listen_element->element_type) {
 			case LISTEN_ELEMENT_TYPE_BACKLIGHT_IDLE:
 			case LISTEN_ELEMENT_TYPE_BACKLIGHT_ACTIVE:
@@ -97,7 +97,7 @@ int	eib_object;
 				check_warning_object (p, eib_object);
 			break;
 #ifdef LCD_DEBUG
-			default: printf_P (PSTR("unknown listen element %d\n"), listen_element->element_type);
+			default: printf_P (PSTR("%s():%d unknown listen element %d\n"), __FUNCTION__, __LINE__, listen_element->element_type);
 #endif
 		}
 
@@ -117,7 +117,7 @@ _LISTEN_ELEMENT_t	*listen_element;
 uint8_t	element_count;
 int i;
 
-	if (!flash_content_ok)
+	if (flash_content_bad)
 		return;
 
 	// poll all listen components and check, if they need hardware setup
@@ -133,7 +133,7 @@ int i;
 
 		// set page descriptions bank for safety
 		XRAM_SELECT_BLOCK(XRAM_LISTEN_ELEMENTS_PAGE);
-		
+
 		switch (listen_element->element_type) {
 
 			case LISTEN_ELEMENT_TYPE_BACKLIGHT_IDLE:
@@ -143,8 +143,11 @@ int i;
 			case LISTEN_ELEMENT_TYPE_LED:
 				init_led_object (p);
 			break;
+            case LISTEN_ELEMENT_TYPE_WARNING:
+            // nothing to do for TYPE_WARNING
+            break;
 #ifdef LCD_DEBUG
-			default: printf_P (PSTR("unknown listen element %d\n"), listen_element->element_type);
+			default: printf_P (PSTR("%s():%d unknown listen element %d\n"), __FUNCTION__, __LINE__, listen_element->element_type);
 #endif
 		}
 
@@ -168,7 +171,7 @@ _LISTEN_ELEMENT_t	*listen_element;
 uint8_t	element_count;
 int i;
 
-	if (!flash_content_ok)
+	if (flash_content_bad)
 		return;
 
 	if (++listen_objects_timer > LISTEN_OBJECTS_TIMER_MAX) {
@@ -190,7 +193,7 @@ int i;
 
 		// set page descriptions bank for safety
 		XRAM_SELECT_BLOCK(XRAM_LISTEN_ELEMENTS_PAGE);
-		
+
 		switch (listen_element->element_type) {
 			case LISTEN_ELEMENT_TYPE_BACKLIGHT_IDLE:
 			case LISTEN_ELEMENT_TYPE_BACKLIGHT_ACTIVE:
