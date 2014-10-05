@@ -40,7 +40,7 @@ void ssd1963_43_1_address_set(unsigned int x1, unsigned int y1, unsigned int x2,
 }
 
 
-// Scales touch input, handles 180° rotation
+// Scales touch input, handles 180Â° rotation
 void ssd1963_43_1_convert_touch_coordinates (void) {
 
 	ly = (TP_Y - SSD1963_43_1_Y_OFFSET) / SSD1963_43_1_Y_OFFSET_FACT;
@@ -56,8 +56,8 @@ void ssd1963_43_1_convert_touch_coordinates (void) {
 }
 
 
-// Rotate by 180° via LCD controller
-// rotation != 0 --> 180°
+// Rotate by 180Â° via LCD controller
+// rotation != 0 --> 180Â°
 void ssd1963_43_1_rotate(uint8_t rotation)
 {
     lcd_rotation = rotation;    // set global

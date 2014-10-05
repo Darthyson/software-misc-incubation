@@ -291,11 +291,11 @@ uint16_t addr;
     else if (flash_content_bad == 2) {
         printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Flash empty, please load a project!"));
         printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Found Magic: %#x %#x %#x"), read_flash (LCD_HEADER_MAGIC_ADDR_0), read_flash (LCD_HEADER_MAGIC_ADDR_1),read_flash (LCD_HEADER_MAGIC_ADDR_2));
-    }        
+    }
     else if (flash_content_bad == 3) {
         printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("OOPS! Current project version not supported!"));
         printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("Found %#x but expected %#x"), read_flash (LCD_HEADER_VERSION_ADDR) & 0xff, LCD_VERSION_EXPECTED);
-    }        
+    }
     // Flash invalid, unspecified (=1)
     else
         printf_tft_P( TFT_COLOR_RED, TFT_COLOR_WHITE, PSTR("OOPS! Flash content not valid :-("));
@@ -370,7 +370,7 @@ void create_flash_control_page (void) {
 				read_flash_qfi_info(G_pri_address+FLASH_PRI_VER_MAJOR), read_flash_qfi_info(G_pri_address+FLASH_PRI_VER_MINOR),G_pri_address);
 	}
 	else
-		printf_tft_P(TFT_COLOR_RED, TFT_COLOR_BLUE, PSTR("Device doesn´t support QFI!"));
+		printf_tft_P(TFT_COLOR_RED, TFT_COLOR_BLUE, PSTR("Device doesnÂ´t support QFI!"));
 
 #ifdef LCD_DEBUG
 	// Dump the QFI Area
@@ -757,9 +757,10 @@ void process_system_page_event (t_touch_event *evt) {
 			if (check_button (REBOOT_CONFIRM_BUTTON_XPOS, REBOOT_CONFIRM_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
 				reboot();
             }
-            // LCD 180° Rotation
+            // LCD 180Â° Rotation
             if (check_button (LCD_ROTATE_BUTTON_XPOS, LCD_ROTATE_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
                 drv_lcd_rotate(!lcd_rotation);  // Toggle rotation
+                create_reboot_confirm_page();   // Rewrite controller RAM need when changing RL Bit
 			}
 			// Cancel
 			if (check_button (CANCEL_BUTTON_XPOS, CANCEL_BUTTON_YPOS, BUTTON_WIDTH, evt)) {
