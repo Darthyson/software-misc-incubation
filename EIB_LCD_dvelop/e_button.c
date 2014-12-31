@@ -129,12 +129,20 @@ float 		fval;
 			switch (p->eib_function) {
 				case EIB_BUTTON_FUNCTION_ON_BRIGHTER:
 					// dimm up
-					eib_value[0] = 0x09;
+					//eib_value[0] = 0x09;
+                    new_value = (p->value[0] & 0x07); // Read from Project
+                    if (new_value) {
+                        eib_value[0] = (new_value | 0x08);  // Heller
+                    }
 					eib_G_DATA_request(get_group_address (p->eib_object1), eib_value, 0);
 				break;
 				case EIB_BUTTON_FUNCTION_OFF_DARKER:
 					// dimm down
-					eib_value[0] = 0x01;
+					//eib_value[0] = 0x01;
+                    new_value = (p->value[0] & 0x07); // Read from Project
+                    if (new_value) {
+                        eib_value[0] = new_value;
+                    }
 					eib_G_DATA_request(get_group_address (p->eib_object1), eib_value, 0);
 				break;
 				case EIB_BUTTON_FUNCTION_UP_STEPUP:
@@ -264,12 +272,20 @@ float 		fval;
 			break;
 			case EIB_BUTTON_FUNCTION_BRIGHTER:
 				// dimm up
-				eib_value[0] = 0x09;
+				//eib_value[0] = 0x09;
+                new_value = (p->value[0] & 0x07); // Read from Project
+                if (new_value) {
+                    eib_value[0] = (new_value | 0x08);  // Heller
+                }
 				eib_G_DATA_request(get_group_address (p->eib_object0), eib_value, 0);
 			break;
 			case EIB_BUTTON_FUNCTION_DARKER:
 				// dimm down
-				eib_value[0] = 0x01;
+				//eib_value[0] = 0x01;
+                new_value = (p->value[0] & 0x07); // Read from Project
+                if (new_value) {
+                    eib_value[0] = new_value;
+                }
 				eib_G_DATA_request(get_group_address (p->eib_object0), eib_value, 0);
 			break;
 			case EIB_BUTTON_FUNCTION_UP:

@@ -43,7 +43,6 @@ void init_download_progress(uint32_t);
 void check_screen_lock(void);
 void init_screen_control (void);
 void busmon_show (t_eib_frame *);
-void refresh_backlight (void);
 void hwmon_show_ir_event (void);
 void hwmon_show_ds1820_event (double, int8_t, uint8_t, uint8_t, uint8_t);
 void hwmon_show_dht_event (double, double, double, int8_t, int8_t, uint8_t, uint8_t, uint8_t, uint8_t);
