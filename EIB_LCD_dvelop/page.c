@@ -345,6 +345,9 @@ int i;
 	warning_state = (warning_state +1) & 0x01;
 	keep_warning_sound = 0; 
 
+	if (flash_content_bad)
+		return;
+
 	// poll all components of active page and check all jumpers and warning LED
 	p = get_page_descriptor (active_page);
 	page_table = (_PAGE_DESCRIPTOR_t*) p;
