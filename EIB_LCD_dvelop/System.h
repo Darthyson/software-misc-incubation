@@ -94,8 +94,8 @@ uint16_t	physical_address;
 uint8_t		display_orientation;
 uint8_t		display_dimming;
 char 		source_file_name[128];
-time_t		file_creation_date;
 char		file_comment[40];
+time_t		file_creation_date;
 uint8_t		checksum;
 } _LCD_FILE_HEADER_t;
 
