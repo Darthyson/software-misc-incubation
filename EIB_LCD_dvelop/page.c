@@ -381,6 +381,8 @@ int i;
 				}
 			break;
 			case PAGE_ELEMENT_TYPE_VALUE:
+				check_value_timeout (p);
+			break;
 			case PAGE_ELEMENT_TYPE_SBUTTON:
 			break;
 #ifdef LCD_DEBUG

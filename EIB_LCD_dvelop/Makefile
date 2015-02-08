@@ -5,7 +5,7 @@ DEVID = 0x32024002
 #LCD controller of 2.4" module
 #DEVID = 0x32024003
 SWVERSIONMAJOR = 1
-SWVERSIONMINOR = 20
+SWVERSIONMINOR = 21
 BOOTLDRSIZE = 0x2000
 #FLASHSIZE - BOOTLDRSIZE - 8
 BOOTLDRINFOSTART = 0x1DFF8
@@ -19,7 +19,7 @@ include C:\ethernut-4.9\nutapp\Makedefs
 SRCS =  $(PROJ).c tft_io.c tft_hx8347a_32_0.c tft_ili9325_24_0.c tft_ssd1289_32_0.c tft_ssd1963_43_0.c tft_ssd1963_43_1.c tft_ssd1963_50_0.c \
 					tft_ssd1963_50_1.c tft_ssd1963_70_0.c TPUart.c EIBLayers.c NandFlash.c ScreenCtrl.c Sound.c System.c \
 					picture.c page.c e_picture.c e_jumper.c e_button.c addr_tab.c e_led.c e_value.c e_sbutton.c listen.c cyclic.c \
-					o_backlight.c o_led.c rc5_io.c ir_button.c 1wire_io.c ds1820.c dht11.c o_button.c o_warning.c \
+					o_backlight.c o_led.c rc5_io.c ir_button.c 1wire_io.c ds1820.c dht11.c o_button.c o_warning.c o_timeout.c \
 					EIBObjects.c FATSingleOpt/dos.c FATSingleOpt/dir.c FATSingleOpt/fat.c FATSingleOpt/mmc_spi.c FATSingleOpt/find_x.c
 
 OPT = s
@@ -51,7 +51,7 @@ HWDEF += -DSWVERSIONMINOR=$(SWVERSIONMINOR)
 
 
 LDFLAGS	+= -Wl,--section-start=.bootldrinfo=$(BOOTLDRINFOSTART)
-#CFLAGS += -gdwarf-2
+CFLAGS += -gdwarf-2
 #CFLAGS += -g2
 
 clean:

@@ -202,9 +202,6 @@ void tft_set_pointer (uint8_t);
 */
 void tft_backlight (uint8_t);
 
-// refresh backlight setting as dimming values are changed
-void refresh_backlight(void);
-
 /** sents the init sequence to the tft controller
 * already called by tft_init();
 */

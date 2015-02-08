@@ -94,8 +94,8 @@ uint16_t	physical_address;
 uint8_t		display_orientation;
 uint8_t		display_dimming;
 char 		source_file_name[128];
-char		file_comment[40];
 time_t		file_creation_date;
+char		file_comment[40];
 uint8_t		checksum;
 } _LCD_FILE_HEADER_t;
 
@@ -109,7 +109,7 @@ uint8_t		checksum;
 #define	LCD_HEADER_MAGIC_2			0x4443
 // V1.0
 #define LCD_HEADER_VERSION_ADDR		0, 0x03
-#define LCD_VERSION_EXPECTED		0x1D
+#define LCD_VERSION_EXPECTED		0x1E
 // Physical Address
 #define LCD_HEADER_PHYSICAL_ADDR_LB	0, 0x03
 #define LCD_HEADER_PHYSICAL_ADDR_HB	0, 0x04
