@@ -32,6 +32,43 @@ uint8_t ds1820_remain[sizeof(port_bit)];
 //final static String repeatTimes[] = { "1s", "2s", "5s", "10s", "30s", "60s" };
 const uint16_t DS1820_REPEAT_TIMES[] = { 33, 65, 152, 303, 909, 1818 };
 
+
+// Convert double to EIS 5 / DPT 9 format with variable exponent
+static int16_t convert_float_to_eis5(double value)
+{
+//printf_P(PSTR("EIS5 Conv 1: Input   %10.5f\n"), value);
+    int16_t eis5 = (int16_t)(value *100);     // EIS5 resolution is 0.01
+    uint8_t exponent = 0;
+
+//printf_P(PSTR("EIS5 Conv 2: Int16   %d = 0x%4.4x\n"), eis5,eis5);
+
+    while (abs(eis5) > 0x07ff)  // if larger than 11bit (+2047 / -2048)
+    {
+        eis5 = eis5 >> 1;
+        exponent++;
+//printf_P(PSTR("EIS5 Conv 3: Shift   %d = 0x%4.4x\n"), eis5,eis5);
+    }
+    eis5 &= 0x07ff;             // just mantissa
+//printf_P(PSTR("EIS5 Conv 4: Exponent   %d\n"), exponent);
+
+    eis5 |= (exponent << 11);
+//printf_P(PSTR("EIS5 Conv 5: Join   %d = 0x%4.4x\n"), eis5,eis5);
+
+    if (value < 0)
+    eis5 |= 0x8000;
+//printf_P(PSTR("EIS5 Conv 6: Sign   %d = 0x%4.4x\n"), eis5,eis5);
+
+    // Swap H and L bytes
+    exponent = (eis5 >> 8);
+    eis5 = (eis5 << 8) | exponent;
+
+//printf_P(PSTR("EIS5 Conv 7: Swapped   0x%4.4x\n"), eis5);
+    return eis5;
+}
+
+
+
+
 void init_ds1820 (char *cp) {
 
 _O_DS1820_t*	p;
@@ -243,17 +280,7 @@ _O_DS1820_t*	p;
 				// convert value and sent it to bus
 				switch (p->eis_number_format) {
 					case DS1820_FORMAT_EIS5:
-
-						ds1820_temp[ds_ch] *= 100.0/8.0;
-						w = (int16_t) ds1820_temp[ds_ch];
-						w &= 0x07ff;
-						w |= (3 << 11);
-						if (ds1820_temp[ds_ch] < 0)
-							w |= 0x8000;
-						// exchange LB-HB
-						ds_byte = (w >> 8) & 0xff;
-						w = w << 8;
-						w |= ds_byte;
+					    w = convert_float_to_eis5(ds1820_temp[ds_ch]);
 						ds_byte = p->eib_object;
 						eib_G_DATA_request(get_group_address (ds_byte), (uint8_t*)&w, 2);
 					break;
@@ -445,39 +472,7 @@ _O_DS1820_t*	p;
 				// convert value and sent it to bus
 				switch (p->eis_number_format) {
 					case DS1820_FORMAT_EIS5:
-
-						// TEST, TODO
-                        //ds1820_temp[ds_ch] = 0xFFFF * 0.0625 + 0.0625; // 12 bit resolution
-
-                        printf_P(PSTR("DSB DEBUG 1     %10.5f\n"), ds1820_temp[ds_ch]);
-
-                        ds1820_temp[ds_ch] *= 100.0/8.0;
-                        printf_P(PSTR("DSB DEBUG 2     %10.5f\n"), ds1820_temp[ds_ch]);
-						w = (int16_t) ds1820_temp[ds_ch];
-                        printf_P(PSTR("DSB DEBUG 3     %d, = %4.4x\n"), w,w);
-                        //w &= 0x07ff;    // mantisse
-
-
-                        if (ds1820_temp[ds_ch] < 0) // TODO -0.06 auf dem LCD -> -163.84 -> 9800
-                        {
-                            w--;
-                            printf_P(PSTR("DSB DEBUG 4A    %d, = %4.4x\n"), w,w);
-
-                            w &= 0x07ff;    // mantisse
-                            printf_P(PSTR("DSB DEBUG 4B    %d, = %4.4x\n"), w,w);
-                            w |= 0x8000;    // mantisse pos/neg
-                        }
-                        else
-                            w &= 0x07ff;    // mantisse
-
-                        printf_P(PSTR("DSB DEBUG 5     %d, = %4.4x\n"), w,w);
-						w |= (3 << 11); // Exponent 3 fix
-                        printf_P(PSTR("DSB DEBUG 6     %d, = %4.4x\n"), w,w);
-
-						// exchange LB-HB
-						ds_byte = (w >> 8) & 0xff;
-						w = w << 8;
-						w |= ds_byte;
+                        w = convert_float_to_eis5(ds1820_temp[ds_ch]);
 						ds_byte = p->eib_object;
 						eib_G_DATA_request(get_group_address (ds_byte), (uint8_t*)&w, 2);
 					break;
